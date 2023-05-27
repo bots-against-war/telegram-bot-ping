@@ -228,3 +228,4 @@ pip-selfcheck.json
 env.sh
 *.session
 pings.json
+run.sh
