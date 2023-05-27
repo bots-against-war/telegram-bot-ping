@@ -30,7 +30,10 @@ async def main() -> None:
 
     await bot.send_message(
         config.NOTIFICATIONS_CHAT_ID,
-        f"Starting Telegram bot pinger with {len(pings)} pings:\n\n" + "\n".join(p.describe() for p in pings),
+        f"🏓 Starting Telegram bot pinger with {len(pings)} pings:\n\n<code>"
+        + "\n".join(p.describe() for p in pings)
+        + "</code>",
+        parse_mode="HTML",
     )
 
     try:
