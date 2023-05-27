@@ -12,7 +12,7 @@ from telethon import TelegramClient
 
 from ping import TelegramBotPing
 
-logging.basicConfig(format="%(asctime)s [%(levelname)5s] %(name)s: %(message)s", level=config.LOG_LEVEL)
+logging.basicConfig(format="%(asctime)s [%(levelname)s] %(name)s: %(message)s", level=config.LOG_LEVEL)
 logger = logging.getLogger()
 
 
