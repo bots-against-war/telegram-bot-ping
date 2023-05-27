@@ -14,7 +14,7 @@ class TelegramAlertsHandler(logging.Handler):
         self.bot = bot
         self.channel_id = channel_id
         self._tasks: set[asyncio.Task] = set()
-        self.formatter = logging.Formatter(fmt="🏓 Telegram bot ping error\n\n%(name)s: %(message)s\n%(pathname)s:%(lineno)d")
+        self.formatter = logging.Formatter(fmt="🏓 Telegram bot pinger alert\n\n%(name)s: %(message)s\n%(pathname)s:%(lineno)d")
 
     def setup(self) -> None:
         logging.getLogger().addHandler(self)
