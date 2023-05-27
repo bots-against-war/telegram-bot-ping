@@ -16,9 +16,10 @@ logger = logging.getLogger()
 
 
 async def main() -> None:
+    bot = AsyncTeleBot(config.BOT_TOKEN)
     telegram_alerts_log_handler = TelegramAlertsHandler(
-        bot=AsyncTeleBot(config.BOT_TOKEN),
-        channel_id=int(config.ALERTS_CHANNEL_ID),
+        bot=bot,
+        channel_id=int(config.ALERTS_CHAT_ID),
     )
     telegram_alerts_log_handler.setup()
 
@@ -26,6 +27,11 @@ async def main() -> None:
     pings_json_raw = json.loads(pathlib.Path(pings_json_file).read_text())
     logger.info("Parsing pings from raw data: %s", pings_json_raw)
     pings = [TelegramBotPing(**raw) for raw in pings_json_raw]
+
+    await bot.send_message(
+        config.NOTIFICATIONS_CHAT_ID,
+        f"Starting Telegram bot pinger with {len(pings)} pings:\n\n" + "\n".join(p.describe() for p in pings),
+    )
 
     try:
         async with TelegramClient("telegram-bot-pinger", config.API_ID, config.API_HASH) as client:
