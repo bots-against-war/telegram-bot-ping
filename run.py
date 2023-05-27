@@ -1,4 +1,5 @@
 import asyncio
+import time
 from telebot import AsyncTeleBot
 import json
 import logging
@@ -47,6 +48,7 @@ async def main() -> None:
             await asyncio.gather(*tasks)
     finally:
         logger.error("Telegram bot pinger going offline!")
+        time.sleep(1)
 
 
 asyncio.run(main())
