@@ -1,0 +1,2 @@
+telebot-against-war==0.6.5
+Telethon==1.28.5
