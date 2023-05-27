@@ -36,18 +36,20 @@ async def main() -> None:
             me = await client.get_me()
             logger.info("Starting pings with user %s", me.stringify())
 
-            await bot.send_message(
-                config.NOTIFICATIONS_CHAT_ID,
-                f"🏓 Starting Telegram bot pinger with {len(pings)} pings:\n\n<code>"
-                + "\n".join(p.describe() for p in pings)
-                + "</code>",
-                parse_mode="HTML",
-            )
+            if not config.SILENT:
+                await bot.send_message(
+                    config.NOTIFICATIONS_CHAT_ID,
+                    f"🏓 Starting Telegram bot pinger with {len(pings)} pings:\n\n<code>"
+                    + "\n".join(p.describe() for p in pings)
+                    + "</code>",
+                    parse_mode="HTML",
+                )
 
             tasks = [asyncio.create_task(ping.run(client)) for ping in pings]
             await asyncio.gather(*tasks)
     finally:
-        logger.error("Telegram bot pinger going offline!")
+        if not config.SILENT:
+            logger.error("Telegram bot pinger going offline!")
         await asyncio.sleep(10)
         logger.info("Finally, dying")
 
