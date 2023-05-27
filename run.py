@@ -29,20 +29,20 @@ async def main() -> None:
     logger.info("Parsing pings from raw data: %s", pings_json_raw)
     pings = [TelegramBotPing(**raw) for raw in pings_json_raw]
 
-    await bot.send_message(
-        config.NOTIFICATIONS_CHAT_ID,
-        f"🏓 Starting Telegram bot pinger with {len(pings)} pings:\n\n<code>"
-        + "\n".join(p.describe() for p in pings)
-        + "</code>",
-        parse_mode="HTML",
-    )
-
     try:
         async with TelegramClient("telegram-bot-pinger", config.API_ID, config.API_HASH) as client:
             await client.start()
 
             me = await client.get_me()
             logger.info("Starting pings with user %s", me.stringify())
+
+            await bot.send_message(
+                config.NOTIFICATIONS_CHAT_ID,
+                f"🏓 Starting Telegram bot pinger with {len(pings)} pings:\n\n<code>"
+                + "\n".join(p.describe() for p in pings)
+                + "</code>",
+                parse_mode="HTML",
+            )
 
             tasks = [asyncio.create_task(ping.run(client)) for ping in pings]
             await asyncio.gather(*tasks)
