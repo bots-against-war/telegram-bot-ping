@@ -48,7 +48,7 @@ async def main() -> None:
             await asyncio.gather(*tasks)
     finally:
         logger.error("Telegram bot pinger going offline!")
-        time.sleep(10)
+        await asyncio.sleep(10)
         logger.info("Finally, dying")
 
 
