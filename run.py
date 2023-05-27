@@ -30,23 +30,23 @@ async def main() -> None:
     pings = [TelegramBotPing(**raw) for raw in pings_json_raw]
 
     try:
-        async with TelegramClient("telegram-bot-pinger", config.API_ID, config.API_HASH) as client:
-            await client.start()
+        client = TelegramClient("telegram-bot-pinger", config.API_ID, config.API_HASH)
+        await client.start()
 
-            me = await client.get_me()
-            logger.info("Starting pings with user %s", me.stringify())
+        me = await client.get_me()
+        logger.info("Starting pings with user %s", me.stringify())
 
-            if not config.SILENT:
-                await bot.send_message(
-                    config.NOTIFICATIONS_CHAT_ID,
-                    f"🏓 Starting Telegram bot pinger with {len(pings)} pings:\n\n<code>"
-                    + "\n".join(p.describe() for p in pings)
-                    + "</code>",
-                    parse_mode="HTML",
-                )
+        if not config.SILENT:
+            await bot.send_message(
+                config.NOTIFICATIONS_CHAT_ID,
+                f"🏓 Starting Telegram bot pinger with {len(pings)} pings:\n\n<code>"
+                + "\n".join(p.describe() for p in pings)
+                + "</code>",
+                parse_mode="HTML",
+            )
 
-            tasks = [asyncio.create_task(ping.run(client)) for ping in pings]
-            await asyncio.gather(*tasks)
+        tasks = [asyncio.create_task(ping.run(client)) for ping in pings]
+        await asyncio.gather(*tasks)
     finally:
         if not config.SILENT:
             logger.error("Telegram bot pinger going offline!")
