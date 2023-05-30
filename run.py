@@ -51,6 +51,7 @@ async def main() -> None:
         if not config.SILENT:
             logger.error("Telegram bot pinger going offline!")
         await asyncio.sleep(10)
+        await client.disconnect()
         logger.info("Finally, dying")
 
 
